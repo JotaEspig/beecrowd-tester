@@ -1,5 +1,6 @@
 #!/bin/bash
 
+RED="\e[31m"
 GREEN="\e[32m"
 YELLOW="\e[33m"
 RESET="\e[0m"
@@ -34,18 +35,38 @@ test()
     mkdir tmp 2>/dev/null    
 
     # languages
-    if [ "${filename:point_idx}" == cpp ]; then
+    if [[ "${filename:point_idx}" == cpp || "${filename:point_idx}" == c ]]; then
         g++ $solution_file -o ./tmp/$filename.out
         cat $input_file | ./tmp/$filename.out > ./tmp/$filename.output
 
+        echo ""
         echo -e "${GREEN}Expected: ${RESET}"
         cat $expected_output_file
         echo -e "\n${YELLOW}Got: ${RESET}"
         cat ./tmp/$filename.output
 
         echo ""
-        diff --color ./tmp/$filename.output $expected_output_file
+        diff=$(diff --color ./tmp/$filename.output $expected_output_file)
+        if [ "$diff" == "" ]; then
+            echo -e "${GREEN}Accepted${RESET}"
+        else
+            echo -e "${RED}Difference:${RESET}"
+            diff --color ./tmp/$filename.output $expected_output_file
+        fi
     fi
+}
+
+add()
+{
+    filename=$1
+
+    point_idx=$(expr index $filename .)
+    input_file="./tests/$(expr substr $filename 1 $(($point_idx - 1))).in"
+    expected_output_file="./tests/$(expr substr $filename 1 $(($point_idx - 1))).exout"
+    solution_file="./solutions/$filename"
+
+    touch $input_file $expected_output_file $solution_file
+    echo -e "Created files:\n$input_file\n$expected_output_file\n$solution_file"
 }
 
 if [[ ! "$#" -eq 1 && ! "$#" -eq 2 ]]; then
@@ -68,4 +89,13 @@ if [ $1 == "test" ]; then
     fi
     
     test $2
+elif [ $1 == "add" ]; then
+    if [ ! "$#" -eq 2 ]; then
+        echo "Invalid number of arguments."
+        echo "Use: './run.sh add <filename>'"
+        echo "Use: './run.sh help' to get better explanations"
+        exit 1
+    fi
+
+    add $2
 fi
