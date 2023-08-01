@@ -1,7 +1,6 @@
 ./tmp
-./solutions
-!./solutions/.empty
 *.exout
 *.out
 *.output
 *.in
+*.cpp
