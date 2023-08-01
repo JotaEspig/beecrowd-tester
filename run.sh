@@ -1,4 +1,9 @@
 #!/bin/bash
+
+GREEN="\e[32m"
+YELLOW="\e[33m"
+RESET="\e[0m"
+
 test()
 {
     filename=$1
@@ -32,7 +37,14 @@ test()
     if [ "${filename:point_idx}" == cpp ]; then
         g++ $solution_file -o ./tmp/$filename.out
         cat $input_file | ./tmp/$filename.out > ./tmp/$filename.output
-        diff ./tmp/$filename.output $expected_output_file
+
+        echo -e "${GREEN}Expected: ${RESET}"
+        cat $expected_output_file
+        echo -e "\n${YELLOW}Got: ${RESET}"
+        cat ./tmp/$filename.output
+
+        echo ""
+        diff --color ./tmp/$filename.output $expected_output_file
     fi
 }
 
