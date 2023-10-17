@@ -5,6 +5,24 @@ GREEN="\e[32m"
 YELLOW="\e[33m"
 RESET="\e[0m"
 
+print_diff()
+{
+    echo ""
+    echo -e "${GREEN}Expected: ${RESET}"
+    cat $2
+    echo -e "\n${YELLOW}Got: ${RESET}"
+    cat ./tmp/$1.output
+
+    echo ""
+    diff=$(diff --color ./tmp/$1.output $2)
+    if [ "$diff" == "" ]; then
+        echo -e "${GREEN}Accepted${RESET}"
+    else
+        echo -e "${RED}Difference:${RESET}"
+        diff --color ./tmp/$1.output $2
+    fi
+}
+
 test()
 {
     filename=$1
@@ -39,20 +57,12 @@ test()
         g++ $solution_file -o ./tmp/$filename.out
         cat $input_file | ./tmp/$filename.out > ./tmp/$filename.output
 
-        echo ""
-        echo -e "${GREEN}Expected: ${RESET}"
-        cat $expected_output_file
-        echo -e "\n${YELLOW}Got: ${RESET}"
-        cat ./tmp/$filename.output
+        print_diff $filename $expected_output_file
+    fi
+    if [[ "${filename:point_idx}" == exs ]]; then
+        cat $input_file | elixir $solution_file > ./tmp/$filename.output
 
-        echo ""
-        diff=$(diff --color ./tmp/$filename.output $expected_output_file)
-        if [ "$diff" == "" ]; then
-            echo -e "${GREEN}Accepted${RESET}"
-        else
-            echo -e "${RED}Difference:${RESET}"
-            diff --color ./tmp/$filename.output $expected_output_file
-        fi
+        print_diff $filename $expected_output_file
     fi
 }
 
