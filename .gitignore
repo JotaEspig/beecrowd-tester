@@ -1,3 +1,4 @@
+./elixir_ls
 ./tmp
 *.exout
 *.out
