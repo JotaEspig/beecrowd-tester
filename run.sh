@@ -54,13 +54,18 @@ test()
 
     # languages
     if [[ "${filename:point_idx}" == cpp || "${filename:point_idx}" == c ]]; then
-        g++ $solution_file -o ./tmp/$filename.out
+        g++ -O2 -lm $solution_file -o ./tmp/$filename.out
         cat $input_file | ./tmp/$filename.out > ./tmp/$filename.output
 
         print_diff $filename $expected_output_file
     fi
     if [[ "${filename:point_idx}" == exs ]]; then
         cat $input_file | elixir $solution_file > ./tmp/$filename.output
+
+        print_diff $filename $expected_output_file
+    fi
+    if [[ "${filename:point_idx}" == py ]]; then
+        cat $input_file | python3 $solution_file > ./tmp/$filename.output
 
         print_diff $filename $expected_output_file
     fi
