@@ -69,6 +69,12 @@ test()
 
         print_diff $filename $expected_output_file
     fi
+    if [[ "${filename:point_idx}" == hs ]]; then
+        ghc $solution_file -odir ./tmp/ -o ./tmp/$filename.out
+        cat $input_file | ./tmp/$filename.out > ./tmp/$filename.output
+
+        print_diff $filename $expected_output_file
+    fi
 }
 
 add()
