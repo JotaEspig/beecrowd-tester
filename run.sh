@@ -54,7 +54,7 @@ test()
 
     # languages
     if [[ "${filename:point_idx}" == cpp || "${filename:point_idx}" == c ]]; then
-        g++ -O2 -g3 -fsanitize=address,undefined -lm $solution_file -o ./tmp/$filename.out
+        g++ -g3 -fsanitize=address,undefined -lm $solution_file -o ./tmp/$filename.out
         cat $input_file | ./tmp/$filename.out > ./tmp/$filename.output
 
         print_diff $filename $expected_output_file
