@@ -79,16 +79,32 @@ test()
 
 add()
 {
+    basecpp="#include <bits/stdc++.h>
+using namespace std;
+
+int main(int argc, char argv[]) 
+{
+
+}
+"
+
     filename=$1
 
     point_idx=$(expr index $filename .)
+    extension="${filename##*.}"
     input_file="./tests/$(expr substr $filename 1 $(($point_idx - 1))).in"
     expected_output_file="./tests/$(expr substr $filename 1 $(($point_idx - 1))).exout"
     solution_file="./solutions/$filename"
 
     touch $input_file $expected_output_file $solution_file
+
+    if [ $extension == "cpp" ]; then
+        echo "$basecpp" > "$solution_file"
+    fi 
+
     echo -e "Created files:\n$input_file\n$expected_output_file\n$solution_file"
 }
+
 
 if [[ ! "$#" -eq 1 && ! "$#" -eq 2 ]]; then
     echo "Invalid number of arguments."
