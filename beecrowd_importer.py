@@ -82,6 +82,12 @@ if __name__ == "__main__":
         print("Error:", str(e))
         exit(1)
 
+    # ensure texts has empty line at the end
+    if not input_text.endswith('\n'):
+        input_text += '\n'
+    if not output_text.endswith('\n'):
+        output_text += '\n'
+
     extension = sys.argv[2]
     if not extension.startswith('.'):
         print("Error: file extension must start with a dot (e.g., .py, .cpp).")
