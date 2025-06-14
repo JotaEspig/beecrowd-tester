@@ -95,6 +95,11 @@ import()
     python beecrowd_importer.py $1 $2
 }
 
+clean()
+{
+    git clean -fdX
+}
+
 if [[ ! "$#" -le 1 && "$#" -gt 3 ]]; then
     echo "Invalid number of arguments."
     echo "Use: './run.sh help' to get better explanations"
@@ -133,6 +138,8 @@ elif [ $1 == "import" ]; then
     fi
 
     import $2 $3
+elif [ $1 == "clean" ]; then
+    clean
 else
     echo "Unknown command: $1"
     echo "Use: './run.sh help' to get better explanations"
