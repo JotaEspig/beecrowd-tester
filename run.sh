@@ -90,7 +90,12 @@ add()
     echo -e "Created files:\n$input_file\n$expected_output_file\n$solution_file"
 }
 
-if [[ ! "$#" -eq 1 && ! "$#" -eq 2 ]]; then
+import()
+{
+    python beecrowd_importer.py $1 $2
+}
+
+if [[ ! "$#" -le 1 && "$#" -gt 3 ]]; then
     echo "Invalid number of arguments."
     echo "Use: './run.sh help' to get better explanations"
     exit 1
@@ -119,4 +124,17 @@ elif [ $1 == "add" ]; then
     fi
 
     add $2
+elif [ $1 == "import" ]; then
+    if [ ! "$#" -eq 3 ]; then
+        echo "Invalid number of arguments."
+        echo "Use: './run.sh import <problem_id> <language extension>'"
+        echo "Use: './run.sh help' to get better explanations"
+        exit 1
+    fi
+
+    import $2 $3
+else
+    echo "Unknown command: $1"
+    echo "Use: './run.sh help' to get better explanations"
+    exit 1
 fi
