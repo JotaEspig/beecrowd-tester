@@ -12,4 +12,5 @@
 *.hi
 *.o
 *.py
+!default_files/*
 !beecrowd_importer.py

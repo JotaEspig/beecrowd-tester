@@ -88,6 +88,14 @@ add()
 
     touch $input_file $expected_output_file $solution_file
     echo -e "Created files:\n$input_file\n$expected_output_file\n$solution_file"
+
+    add_filename $solution_file
+}
+
+add_filename()
+{
+    extension="${1##*.}"
+    cat default_files/${extension}.${extension} > $1
 }
 
 import()
