@@ -92,7 +92,7 @@ add()
 
 import()
 {
-    python beecrowd_importer.py $1 $2
+    python3 beecrowd_importer.py $1 $2
 }
 
 clean()
